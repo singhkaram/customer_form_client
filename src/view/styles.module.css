@@ -1,0 +1,154 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2, h3 {
+    color: #333;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  input[type="text"], input[type="email"], input[type="tel"], select {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input[type="file"] {
+    margin-top: 5px;
+  }
+  
+  button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 0;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+  }
+  
+  .error {
+    color: red;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+  }
+  
+  .customer-list {
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .customer-list li {
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .customer-list button {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .customer-list button:first-of-type {
+    background-color: #ffc107;
+  }
+  
+  .preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .preview img {
+    max-width: 200px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .preview video {
+    max-width: 200px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  .customerList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .customerItem {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .customerItem p {
+    margin: 5px 0;
+  }
+  
+  .imagePreview {
+    margin-top: 10px;
+  }
+  
+  .previewImage {
+    width: 150px;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .videoPreview {
+    margin-top: 10px;
+  }
+  
+  .previewVideo {
+    width: 300px;
+    height: auto;
+  }
+  
+  button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  

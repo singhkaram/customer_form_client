@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import styles from './styles.module.css'; // Assuming the CSS above is saved as styles.module.css
 
 const CustomerForm = () => {
   const [customers, setCustomers] = useState([]); // Store customers data
   const [selectedCustomer, setSelectedCustomer] = useState(null); // Store selected customer for update
+  const [imagePreview, setImagePreview] = useState(null); // Preview image
+  const [videoPreview, setVideoPreview] = useState(null); // Preview video
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -66,6 +69,8 @@ const CustomerForm = () => {
       }
       fetchCustomers(); // Refresh customer list after submission
       resetForm();
+      setImagePreview(null); // Reset image preview
+      setVideoPreview(null); // Reset video preview
     } catch (error) {
       console.error('Error saving customer:', error);
       alert('Error saving customer.');
@@ -90,8 +95,21 @@ const CustomerForm = () => {
     setSelectedCustomer(customer);
   };
 
+  // Handle image and video previews
+  const handleImageChange = (event, setFieldValue) => {
+    const file = event.target.files[0];
+    setFieldValue('image', file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
+  const handleVideoChange = (event, setFieldValue) => {
+    const file = event.target.files[0];
+    setFieldValue('video', file);
+    setVideoPreview(URL.createObjectURL(file));
+  };
+
   return (
-    <div>
+    <div className={styles.container}>
       <h2>{selectedCustomer ? 'Update Customer' : 'Create Customer'}</h2>
 
       <Formik
@@ -115,19 +133,19 @@ const CustomerForm = () => {
             <div>
               <label>Name:</label>
               <Field type="text" name="name" />
-              <ErrorMessage name="name" component="div" style={{ color: 'red' }} />
+              <ErrorMessage name="name" component="div" className={styles.error} />
             </div>
 
             <div>
               <label>Email:</label>
               <Field type="email" name="email" />
-              <ErrorMessage name="email" component="div" style={{ color: 'red' }} />
+              <ErrorMessage name="email" component="div" className={styles.error} />
             </div>
 
             <div>
               <label>Phone:</label>
               <Field type="tel" name="phone" />
-              <ErrorMessage name="phone" component="div" style={{ color: 'red' }} />
+              <ErrorMessage name="phone" component="div" className={styles.error} />
             </div>
 
             <div>
@@ -137,7 +155,7 @@ const CustomerForm = () => {
                 <option value="Los Angeles">Los Angeles</option>
                 <option value="Chicago">Chicago</option>
               </Field>
-              <ErrorMessage name="city" component="div" style={{ color: 'red' }} />
+              <ErrorMessage name="city" component="div" className={styles.error} />
             </div>
 
             <div>
@@ -147,7 +165,7 @@ const CustomerForm = () => {
                 <option value="CA">CA</option>
                 <option value="IL">IL</option>
               </Field>
-              <ErrorMessage name="state" component="div" style={{ color: 'red' }} />
+              <ErrorMessage name="state" component="div" className={styles.error} />
             </div>
 
             <div>
@@ -157,7 +175,7 @@ const CustomerForm = () => {
                 <option value="Canada">Canada</option>
                 <option value="Mexico">Mexico</option>
               </Field>
-              <ErrorMessage name="country" component="div" style={{ color: 'red' }} />
+              <ErrorMessage name="country" component="div" className={styles.error} />
             </div>
 
             <div>
@@ -165,8 +183,15 @@ const CustomerForm = () => {
               <input
                 type="file"
                 name="image"
-                onChange={(event) => setFieldValue('image', event.currentTarget.files[0])}
+                accept="image/*"
+                onChange={(event) => handleImageChange(event, setFieldValue)}
               />
+              {imagePreview && (
+                <div className={styles.preview}>
+                  <p>Image Preview:</p>
+                  <img src={imagePreview} alt="Preview" />
+                </div>
+              )}
             </div>
 
             <div>
@@ -174,15 +199,24 @@ const CustomerForm = () => {
               <input
                 type="file"
                 name="video"
-                onChange={(event) => setFieldValue('video', event.currentTarget.files[0])}
+                accept="video/*"
+                onChange={(event) => handleVideoChange(event, setFieldValue)}
               />
+              {videoPreview && (
+                <div className={styles.preview}>
+                  <p>Video Preview:</p>
+                  <video controls>
+                    <source src={videoPreview} type="video/mp4" />
+                  </video>
+                </div>
+              )}
             </div>
 
             <div>
               <label>
                 <Field type="checkbox" name="termsAndConditions" /> Accept Terms and Conditions
               </label>
-              <ErrorMessage name="termsAndConditions" component="div" style={{ color: 'red' }} />
+              <ErrorMessage name="termsAndConditions" component="div" className={styles.error} />
             </div>
 
             <button type="submit" disabled={isSubmitting}>
@@ -194,17 +228,49 @@ const CustomerForm = () => {
 
       {/* List of Customers */}
       <h3>Customer List</h3>
-      <ul>
+      <ul className={styles.customerList}>
         {customers.map((customer) => (
-          <li key={customer._id}>
+          <li key={customer._id} className={styles.customerItem}>
             <p>
-              <strong>{customer.name}</strong> - {customer.email}
+              <strong>Name:</strong> {customer.name}
             </p>
-            <button onClick={() => selectCustomerForUpdate(customer)}>Edit</button>
-            <button onClick={() => deleteCustomer(customer._id)}>Delete</button>
+            <p>
+              <strong>Email:</strong> {customer.email}
+            </p>
+            <p>
+              <strong>Phone:</strong> {customer.phone}
+            </p>
+            <p>
+              <strong>City:</strong> {customer.address.city}, {customer.address.state}, {customer.address.country}
+            </p>
+
+            {/* Image Preview */}
+            {customer.imageUrl && (
+              <div className={styles.imagePreview}>
+                <p><strong>Image Preview:</strong></p>
+                <img src={customer.imageUrl} alt={`${customer.name}'s profile`} className={styles.previewImage} />
+              </div>
+            )}
+
+            {/* Video Preview */}
+            {customer.videoUrl && (
+              <div className={styles.videoPreview}>
+                <p><strong>Video Preview:</strong></p>
+                <video controls className={styles.previewVideo}>
+                  <source src={customer.videoUrl} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            )}
+
+            <div>
+              <button onClick={() => selectCustomerForUpdate(customer)}>Edit</button>
+              <button onClick={() => deleteCustomer(customer._id)}>Delete</button>
+            </div>
           </li>
         ))}
       </ul>
+
     </div>
   );
 };
